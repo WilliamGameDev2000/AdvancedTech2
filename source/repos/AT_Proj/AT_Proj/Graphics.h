@@ -2,6 +2,7 @@
 #include "WillWin.h"
 #include <d3d11.h>
 #include <wrl.h>
+#include <sstream>
 
 class Graphics
 {
@@ -12,8 +13,8 @@ public:
 	Graphics& operator=(const Graphics&) = delete;
 
 	void EndFrame();
-	void ClearBuffer(float red, float gree, float blue) noexcept;
-	void DrawTriangle();
+	void ClearBuffer(float red, float green, float blue) noexcept;
+	void DrawTriangle(float angle);
 
 private:
 	Microsoft::WRL::ComPtr<ID3D11Device> pDevice = nullptr;

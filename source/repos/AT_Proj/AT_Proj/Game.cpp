@@ -1,7 +1,9 @@
 #include "Game.h"
 
-Game::Game() : wnd(1024, 720, 100, 50, "AT GAME WINDOW")
-{}
+Game::Game() : wnd(1024, 720, 0, 0, "AT GAME WINDOW")
+{
+	last = steady_clock::now();
+}
 
 int Game::Go()
 {
@@ -18,6 +20,11 @@ int Game::Go()
 
 void Game::Update()
 {
-	wnd.Gfx().DrawTriangle();
+
+	rotation = duration<float>(steady_clock::now() - last).count();
+
+	const float c = sin(rotation) / 2.0f + 0.5f;
+	wnd.Gfx().ClearBuffer(c, c, 1.0f);
+	wnd.Gfx().DrawTriangle(rotation);
 	wnd.Gfx().EndFrame();
 }

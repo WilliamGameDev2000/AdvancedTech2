@@ -42,6 +42,3 @@ private:
 	int yPos;
 	HWND hWnd;
 };
-
-#define CHWND_EXCEPT( Hres) Window::Exception( __LINE__,__FILE__,Hres)
-#define CHWND_LAST_EXCEPT() Window::Exception( __LINE__,__FILE__,GetLastError())
