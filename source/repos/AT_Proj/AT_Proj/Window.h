@@ -3,6 +3,7 @@
 #include "Graphics.h"
 #include <optional>
 #include <memory>
+#include "Mouse.h"
 
 class Window
 {
@@ -27,8 +28,11 @@ public:
 	~Window();
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
+	void SetTitle(const std::string& title);
 	static std::optional<int> ProcessMessge();
 	Graphics& Gfx();
+	Mouse mouse;
+
 private:
 	static LRESULT CALLBACK MessageInit(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lparam) noexcept;
 	static LRESULT CALLBACK RuntimeMessageHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lparam) noexcept;
@@ -36,6 +40,7 @@ private:
 
 	std::unique_ptr<Graphics> gfxPtr;
 
+	
 	int width;
 	int height;
 	int xPos;

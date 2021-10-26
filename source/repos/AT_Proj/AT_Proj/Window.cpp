@@ -39,6 +39,7 @@ HINSTANCE Window::WindowClass::GetInstance() noexcept
 
 //Window definition
 Window::Window(int width, int height, int xPos, int yPos, const char* name) noexcept
+	: width(width), height(height)
 {
 	const int offset = 100;
 	RECT wr;
@@ -60,6 +61,14 @@ Window::~Window()
 	DestroyWindow(hWnd);
 }
 
+void Window::SetTitle(const std::string& title)
+{
+	if (SetWindowText(hWnd, title.c_str()) == 0)
+	{
+		return;
+	}
+}
+
 std::optional<int> Window::ProcessMessge()
 {
 	MSG msg;
@@ -71,7 +80,7 @@ std::optional<int> Window::ProcessMessge()
 			return msg.wParam;
 		}
 		TranslateMessage(&msg);
-		DispatchMessage(&msg);
+		DispatchMessage(&msg);		
 	}
 
 	return{};
@@ -111,9 +120,53 @@ LRESULT Window::MessageHandler(HWND hWND, UINT msg, WPARAM wParam, LPARAM lparam
 	switch (msg)
 	{
 		case WM_CLOSE:
-		
+		{
 			PostQuitMessage(0);
 			return 0;
+		}
+		case WM_MOUSEMOVE:
+		{
+			const POINTS pt = MAKEPOINTS(lparam);
+			mouse.OnMouseMove(pt.x, pt.y);
+			break;
+		}
+		case WM_LBUTTONDOWN:
+		{
+			const POINTS pt MAKEPOINTS(lparam);
+			mouse.OnLeftPressed(pt.x, pt.y);
+			break;
+		}
+		case WM_RBUTTONDOWN:
+		{
+			const POINTS pt MAKEPOINTS(lparam);
+			mouse.OnRightPressed(pt.x, pt.y);
+			break;
+		}
+		case WM_LBUTTONUP:
+		{
+			const POINTS pt MAKEPOINTS(lparam);
+			mouse.OnLeftReleased(pt.x, pt.y);
+			break;
+		}
+		case WM_RBUTTONUP:
+		{
+			const POINTS pt MAKEPOINTS(lparam);
+			mouse.OnRightReleased(pt.x, pt.y);
+			break;
+		}
+		case WM_MOUSEWHEEL:
+		{
+			const POINTS pt = MAKEPOINTS(lparam);
+			if (GET_WHEEL_DELTA_WPARAM(wParam) > 0)
+			{
+				mouse.OnWheelUp(pt.x, pt.y);
+			}
+			else if (GET_WHEEL_DELTA_WPARAM(wParam) < 0)
+			{
+				mouse.OnWheelDown(pt.x, pt.y);
+			}
+			break;
+		}
 	}
 
 	return DefWindowProc(hWND, msg, wParam, lparam);

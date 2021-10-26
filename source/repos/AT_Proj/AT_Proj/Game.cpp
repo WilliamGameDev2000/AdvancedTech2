@@ -23,8 +23,20 @@ void Game::Update()
 
 	rotation = duration<float>(steady_clock::now() - last).count();
 
+	while (!wnd.mouse.IsEmpty())
+	{
+		const auto e = wnd.mouse.Read();
+		if (e.GetType() == Mouse::Event::Type::Move)
+		{
+			std::ostringstream oss;
+			oss << "Mouse PosX: (" << e.GetPosX() << ", " << e.GetPosY() << ")";
+			wnd.SetTitle(oss.str());
+		}
+	}
+
 	const float c = sin(rotation) / 2.0f + 0.5f;
-	wnd.Gfx().ClearBuffer(c, c, 1.0f);
-	wnd.Gfx().DrawTriangle(rotation);
+	wnd.Gfx().ClearBuffer(c, c, c);
+	wnd.Gfx().DrawTriangle(rotation, wnd.mouse.GetPosX() / 512.0f - 1.0f,
+		-wnd.mouse.GetPosY() / 360.0f + 1.0f);
 	wnd.Gfx().EndFrame();
 }
