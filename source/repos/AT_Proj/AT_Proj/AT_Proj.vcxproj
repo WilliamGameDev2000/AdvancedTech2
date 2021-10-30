@@ -151,16 +151,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="IndexBinder.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="PixelBinder.cpp" />
+    <ClCompile Include="VertexBinder.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Cube.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="IndexBinder.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="PixelBinder.h" />
+    <ClInclude Include="Vertex.h" />
+    <ClInclude Include="VertexBinder.h" />
     <ClInclude Include="WillWin.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

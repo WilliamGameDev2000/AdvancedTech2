@@ -92,10 +92,17 @@ void Graphics::ClearBuffer(float red, float green, float blue) noexcept
 	pContext->ClearRenderTargetView(pTarget.Get() , colour);
 	pContext->ClearDepthStencilView(pDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
 }
+/* TODO Pass translation matrix into draw function for upadating constant buffer,
+		Separate 3dprimitives into own classes,
+		Move Vertex buffer/Pixel buffer out into single creation functions/classes,
+		Move Viewport into separate single creation function,
+		**NEW**
+		Create Camera Class,
+		Create Level Loader,
 
-void Graphics::DrawTriangle(float angle, float x, float z)
+		*/
+void Graphics::DrawCube(float angle, float x, float z)
 {
-	namespace wrl = Microsoft::WRL;
 
 	struct vertex 
 	{
@@ -106,26 +113,17 @@ void Graphics::DrawTriangle(float angle, float x, float z)
 		}position;
 		
 	};
-	//pass colours into the vertexs
 
 	vertex vertecies[] =
 	{
-		/*{ Coords.first, Coords.second, 120,0,0,0},
-		{ Coords2.first, Coords2.second, 255,0,0,0},
-		{ Coords3.first, Coords3.second, 120,0,0,0},
-
-		{ Coords2.first, Coords.second * 2, 0,0,255,0},
-		{ Coords2.first * 2, Coords.second, 255,0,0,0},
-		{ Coords2.first, Coords.second, 0,255,0,0}*/
-
-		{-1.0f, -1.0f, -1.0f},
-		{1.0f, -1.0f, -1.0f},
-		{-1.0f, 1.0f, -1.0f},
-		{1.0f, 1.0f, -1.0f},
-		{-1.0f, -1.0f, 1.0f},
-		{1.0f, -1.0f, 1.0f},
-		{-1.0f, 1.0f, 1.0f},
-		{1.0f, 1.0f, 1.0f},
+		{-1.0f, -1.0f, -1.0f}, //0 back bottom left
+		{1.0f, -1.0f, -1.0f},  //1 back bottom right
+		{-1.0f, 1.0f, -1.0f},  //2 back top left
+		{1.0f, 1.0f, -1.0f},   //3 back top right
+		{-1.0f, -1.0f, 1.0f},  //4 front bottom left
+		{1.0f, -1.0f, 1.0f},   //5 front bottom right
+		{-1.0f, 1.0f, 1.0f},   //6 front top left
+		{1.0f, 1.0f, 1.0f},    //7 front top right
 	};
 
 	wrl::ComPtr<ID3D11Buffer> pVertexBuffer;
@@ -149,12 +147,21 @@ void Graphics::DrawTriangle(float angle, float x, float z)
 
 	const unsigned short indicies[] =
 	{
-		0,2,1, 2,3,1,
-		1,3,5, 3,7,5,
-		2,6,3, 3,6,7,
-		4,5,7, 4,7,6,
-		0,4,2, 2,4,6,
-		0,1,4, 1,5,4
+		0,2,1, 2,3,1, //back face
+		1,3,5, 3,7,5, //right face
+		2,6,3, 3,6,7, //top face
+		4,5,7, 4,7,6, //front face
+		0,4,2, 2,4,6, //left face
+		0,1,4, 1,5,4, //bottom face
+
+		//USE FOR WIREFRAME MODELS
+		/*0,1, 0,2, 0,3, 0,4, 0,5, 0,6,
+		1,2, 1,3, 1,5, 1,7,
+		2,3, 2,4, 2,6, 2,7,
+		3,5, 3,6, 3,7,
+		4,5, 4,6, 4,7,
+		5,7,
+		6,7*/
 	};
 
 	wrl::ComPtr<ID3D11Buffer> pIndexBuffer;

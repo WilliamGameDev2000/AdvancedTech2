@@ -14,7 +14,7 @@ public:
 
 	void EndFrame();
 	void ClearBuffer(float red, float green, float blue) noexcept;
-	void DrawTriangle(float angle, float x, float z);
+	void DrawCube(float angle, float x, float z);
 
 private:
 	Microsoft::WRL::ComPtr<ID3D11Device> pDevice = nullptr;

@@ -21,7 +21,7 @@ int Game::Go()
 void Game::Update()
 {
 
-	rotation = duration<float>(steady_clock::now() - last).count();
+	
 
 	while (!wnd.mouse.IsEmpty())
 	{
@@ -33,12 +33,13 @@ void Game::Update()
 			wnd.SetTitle(oss.str());
 		}
 	}
+	rotation = duration<float>(steady_clock::now() - last).count();
 
 	const float c = sin(rotation) / 2.0f + 0.5f;
 	wnd.Gfx().ClearBuffer(c, c, c);
-	wnd.Gfx().DrawTriangle(-rotation, 0.0f,
+	wnd.Gfx().DrawCube(-1 * rotation, 0.0f,
 		0.0f);
-	wnd.Gfx().DrawTriangle(rotation, wnd.mouse.GetPosX() / 512.0f - 1.0f,
+	wnd.Gfx().DrawCube(rotation, wnd.mouse.GetPosX() / 512.0f - 1.0f,
 		-wnd.mouse.GetPosY() / 360.0f + 1.0f);
 	wnd.Gfx().EndFrame();
 }
