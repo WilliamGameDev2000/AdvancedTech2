@@ -7,6 +7,7 @@
 #include <DirectXMath.h>
 #include <memory>
 #include <random>
+#include "Camera.h"
 
 class Graphics
 {
@@ -22,6 +23,8 @@ public:
 	void DrawIndexed(UINT count) noexcept;
 	void SetProjection(DirectX::FXMMATRIX proj) noexcept;
 	DirectX::XMMATRIX GetProjection() const noexcept;
+
+	Camera cam;
 private:
 	DirectX::XMMATRIX projection;
 

@@ -146,4 +146,9 @@
       <Filter>Header Files\Shader</Filter>
     </FxCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="MapFile.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

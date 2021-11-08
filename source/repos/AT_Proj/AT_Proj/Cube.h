@@ -4,27 +4,16 @@
 class Cube : public ObjectDrawable<Cube>
 {
 public:
-	Cube(Graphics& gfx, std::mt19937& rng,
-		std::uniform_real_distribution<float>& adist,
-		std::uniform_real_distribution<float>& ddist,
-		std::uniform_real_distribution<float>& odist,
-		std::uniform_real_distribution<float>& rdist);
+	Cube(Graphics& gfx);
 	void Update(float dt) noexcept override;
+	void setPos(float xpos,float ypos,float zpos);
+	void setPosX(float xpos);
+	void setPosY(float ypos);
+	void setPosZ(float zpos);
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 private:
 	// positional
-	float r;
-	float roll = 0.0f;
-	float pitch = 0.0f;
-	float yaw = 0.0f;
-	float theta;
-	float phi;
-	float chi;
-	// speed (delta/s)
-	float droll;
-	float dpitch;
-	float dyaw;
-	float dtheta;
-	float dphi;
-	float dchi;
+	float xPos = 0;
+	float yPos = 0;
+	float zPos = 0;
 };

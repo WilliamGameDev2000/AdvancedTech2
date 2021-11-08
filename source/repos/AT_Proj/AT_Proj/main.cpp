@@ -6,5 +6,5 @@ HINSTANCE hPrevInstance,
 LPSTR lpCmdLine,
 int nCmdShow)
 {
-	return Game{}.Go();
+	return Game{}.Init();
 }

@@ -19,6 +19,15 @@ protected:
 	void AddBind(std::unique_ptr<Bindable> bind) noexcept;
 	void AddIndexBuffer(std::unique_ptr<class IndexBuffer> ibuf) noexcept;
 	virtual const std::vector<std::unique_ptr<Bindable>>& GetStaticBinds() const noexcept = 0;
+	struct Vertex
+	{
+		struct
+		{
+			float x;
+			float y;
+			float z;
+		} pos;
+	};
 private:
 	const class IndexBuffer* pIndexBuffer = nullptr;
 	std::vector<std::unique_ptr<Bindable>> binds;

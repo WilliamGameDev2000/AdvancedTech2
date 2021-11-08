@@ -12,7 +12,7 @@ public:
 	Game();
 	~Game();
 
-	int Go();
+	int Init();
 
 private:
 	void Update();
@@ -21,6 +21,9 @@ private:
 	Window wnd;
 	std::chrono::steady_clock::time_point last;
 	float rotation;
-	const static int numCubes = 80;
+	int numCubes = 0;
+	int row = 0;
+	int column = 0;
+	char wallBlock = '#';
 	std::vector<std::unique_ptr<class Cube>> Cubes;
 };
