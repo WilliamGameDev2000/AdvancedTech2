@@ -115,3 +115,13 @@ void Graphics::SetProjection(DirectX::FXMMATRIX proj) noexcept
 {
 	projection = proj;
 }
+
+void Graphics::SetCamera(DirectX::FXMMATRIX _cam) noexcept
+{
+	cam.SetView(_cam);
+}
+
+DirectX::XMMATRIX Graphics::GetCamera() const noexcept
+{
+	return cam.GetView();
+}

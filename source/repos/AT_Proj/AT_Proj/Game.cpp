@@ -7,27 +7,10 @@ Game::Game() : wnd(1024, 720, 0, 0, "AT GAME WINDOW")
 {
 	last = steady_clock::now();
 
-	std::fstream levelFile;
-	levelFile.open("MapFile.txt");
-	while (!levelFile.eof())
-	{
-		if (row == 9)
-		{
-			row = 0;
-			column++;
-		}
+	LoadLevel("MapFile");
 
-		if (levelFile.get() == wallBlock)
-		{
-			Cubes.push_back(std::make_unique<Cube>(wnd.Gfx()));
-			Cubes[numCubes]->setPos((row * 2) - 4.5, (column * 2) - 4.5, 10);
-			numCubes++;
-
-		}
-		row++;
-	}
-	levelFile.close();
 	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
+	wnd.Gfx().SetCamera(DirectX::XMMatrixTranslation(0.0f, 0.0f, 20.0f));
 }
 
 int Game::Init()
@@ -48,18 +31,17 @@ Game::~Game()
 
 void Game::Update()
 {
-
+	
 	while (!wnd.mouse.IsEmpty())
 	{
 		
 		const auto e = wnd.mouse.Read();
 		if (e.GetType() == Mouse::Event::Type::Move)
 		{
-			wnd.Gfx().cam.SetYaw(wnd.mouse.GetPosX());
-			wnd.Gfx().cam.SetPitch(wnd.mouse.GetPosY());
-					
+			wnd.Gfx().cam.SetYaw(e.GetPosX());
+			wnd.Gfx().cam.SetPitch(e.GetPosY());
 		}
-		wnd.Gfx().cam.UpdateCamera();
+		wnd.Gfx().cam.UpdateCamera();	
 	}
 
 	wnd.Gfx().ClearBuffer(0.7f, 0.0f, 0.12f);
@@ -67,7 +49,7 @@ void Game::Update()
 
 	for (auto& c : Cubes)
 	{
-		c->Update(dt);
+		//c->Update(dt);
 		c->Draw(wnd.Gfx());
 	}
 	
@@ -81,3 +63,63 @@ float Game::Mark()
 	const duration<float> frameTime = last - old;
 	return frameTime.count();
 }
+
+void Game::LoadLevel(std::string level_file)
+{
+	LoadWall(level_file);
+	LoadFloor(level_file);
+}
+
+void Game::LoadWall(std::string level_file)
+{
+	std::ifstream levelFile;
+	levelFile.open(level_file + ".txt");
+	while (!levelFile.eof())
+	{
+		if (levelFile.peek() == '\n')
+		{
+			column = 0;
+			row++;
+		}
+
+		if (levelFile.get() == wallBlock)
+		{
+			Cubes.push_back(std::make_unique<Cube>(wnd.Gfx()));
+			Cubes[numCubes]->setPos((column * 2) - 11, 0, (row * 2) - 6);
+			numCubes++;
+
+		}
+
+		column++;
+	}
+	levelFile.close();
+}
+
+void Game::LoadFloor(std::string level_file)
+{
+	column = 0;
+	row = 0;
+	std::ifstream levelFile;
+	levelFile.open(level_file + ".txt");
+	while (!levelFile.eof())
+	{
+		if (levelFile.peek() == '\n')
+		{
+			column = 0;
+			row++;
+		}
+
+		if (levelFile.get() == floorBlock)
+		{
+			Cubes.push_back(std::make_unique<Cube>(wnd.Gfx()));
+			Cubes[numCubes]->setPos((column * 2) - 11, -2, (row * 2) - 6);
+			numCubes++;
+
+		}
+
+		column++;
+	}
+	levelFile.close();
+}
+
+

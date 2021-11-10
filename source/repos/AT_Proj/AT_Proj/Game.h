@@ -17,6 +17,9 @@ public:
 private:
 	void Update();
 	float Mark();
+	void LoadLevel(std::string levelFile);
+	void LoadWall(std::string levelFile);
+	void LoadFloor(std::string levelFile);
 
 	Window wnd;
 	std::chrono::steady_clock::time_point last;
@@ -25,5 +28,6 @@ private:
 	int row = 0;
 	int column = 0;
 	char wallBlock = '#';
+	char floorBlock = '-';
 	std::vector<std::unique_ptr<class Cube>> Cubes;
 };

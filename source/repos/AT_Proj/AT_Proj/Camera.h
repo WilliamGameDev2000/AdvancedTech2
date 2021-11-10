@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <DirectXMath.h>
 
+using namespace DirectX;
 class Camera
 {
 public:
@@ -12,26 +13,26 @@ public:
 	Camera& operator=(const Camera& camera) = delete;
 	~Camera() = default;
 
+	XMMATRIX GetView() const noexcept;
+	void SetView(XMMATRIX view);
 	void UpdateCamera();
 	void SetYaw(float new_yaw);
 	void SetPitch(float new_pitch);
 
 private:
 	
-	DirectX::XMVECTOR camTarget;
-	DirectX::XMVECTOR camPosition;
-	DirectX::XMVECTOR camUp;
-	DirectX::XMMATRIX camView;
+	XMVECTOR camTarget;
+	XMVECTOR camPosition;
+	XMVECTOR camUp = {0.0f, 1.0f, 0.0f};
+	XMMATRIX camView;
 
-	DirectX::XMVECTOR defaultForward = DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
-	DirectX::XMVECTOR defaultRight = DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
-	DirectX::XMVECTOR camForward = DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
-	DirectX::XMVECTOR camRight = DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
+	XMVECTOR defaultForward{ 0.0f, 0.0f, 1.0f };
+	XMVECTOR defaultRight = { 1.0f, 0.0f, 0.0f };
+	XMVECTOR camForward = { 0.0f, 0.0f, 1.0f };
+	XMVECTOR camRight = { 1.0f, 0.0f, 0.0f };
 	
 
-	DirectX::XMMATRIX camRotationMatrix;
-	DirectX::XMMATRIX groundWorld;
-	
+	XMMATRIX camRotationMatrix;	
 
 	float moveLeftRight = 0.0f;
 	float moveForwardBack = 0.0f;

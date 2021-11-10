@@ -1,35 +1,45 @@
 #include "Camera.h"
 
+XMMATRIX Camera::GetView() const noexcept
+{
+	return camView;
+}
+
+void Camera::SetView(XMMATRIX view)
+{
+	camView = view;
+}
+
 void Camera::UpdateCamera()
 {
-	camRotationMatrix = DirectX::XMMatrixRotationRollPitchYaw(camPitch, camYaw, 0);
-	camTarget = DirectX::XMVector3TransformCoord(defaultForward, camRotationMatrix);
-	camTarget = DirectX::XMVector3Normalize(camTarget);
+	camRotationMatrix = XMMatrixRotationRollPitchYaw(camPitch, camYaw, 0);
+	camTarget = XMVector3TransformCoord(defaultForward, camRotationMatrix);
+	camTarget = XMVector3Normalize(camTarget);
 
-	DirectX::XMMATRIX RotateYTempMatrix;
-	RotateYTempMatrix = DirectX::XMMatrixRotationY(camYaw);
+	XMMATRIX RotateYTempMatrix;
+	RotateYTempMatrix = XMMatrixRotationY(camYaw);
 
-	camRight = DirectX::XMVector3TransformCoord(defaultRight, RotateYTempMatrix);
-	camUp = DirectX::XMVector3TransformCoord(camUp, RotateYTempMatrix);
-	camForward = DirectX::XMVector3TransformCoord(defaultForward, RotateYTempMatrix);
+	camRight = XMVector3TransformCoord(defaultRight, RotateYTempMatrix);
+	camUp = XMVector3TransformCoord(camUp, RotateYTempMatrix);
+	camForward = XMVector3TransformCoord(defaultForward, RotateYTempMatrix);
 
-	camPosition = DirectX::XMVectorAdd(camPosition, DirectX::XMVectorScale(camRight, moveLeftRight));
-	camPosition = DirectX::XMVectorAdd(camPosition, DirectX::XMVectorScale(camForward, moveForwardBack));
+	camPosition += moveLeftRight * camRight;
+	camPosition += moveForwardBack * camForward;
 
 	moveLeftRight = 0.0f;
 	moveForwardBack = 0.0f;
 
-	camTarget = DirectX::XMVectorAdd(camPosition, camTarget);
+	camTarget = camPosition + camTarget;
 
-	camView = DirectX::XMMatrixLookAtLH(camPosition, camTarget, {1,1,1});
+	camView = XMMatrixLookAtLH(camPosition, camTarget, camUp);
 }
 
 void Camera::SetYaw(float new_yaw)
 {
-	camYaw += new_yaw;
+	camYaw += new_yaw * 0.0001f;
 }
 
 void Camera::SetPitch(float new_pitch)
 {
-	camPitch += new_pitch;
+	camPitch += new_pitch * 0.0001f;
 }

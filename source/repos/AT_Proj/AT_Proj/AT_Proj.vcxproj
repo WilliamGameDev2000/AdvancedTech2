@@ -162,6 +162,7 @@
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="PixelShader.cpp" />
+    <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Topology.cpp" />
     <ClCompile Include="TransformCBuff.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectDrawable.h" />
     <ClInclude Include="PixelShader.h" />
+    <ClInclude Include="Sphere.h" />
     <ClInclude Include="Topology.h" />
     <ClInclude Include="TransformCBuff.h" />
     <ClInclude Include="VertexBuffer.h" />
