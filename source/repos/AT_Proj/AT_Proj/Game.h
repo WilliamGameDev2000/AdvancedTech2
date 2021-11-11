@@ -29,5 +29,7 @@ private:
 	int column = 0;
 	char wallBlock = '#';
 	char floorBlock = '-';
+
+	float speed = 2.5f;
 	std::vector<std::unique_ptr<class Cube>> Cubes;
 };

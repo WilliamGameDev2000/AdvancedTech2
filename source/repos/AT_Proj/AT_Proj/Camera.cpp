@@ -36,10 +36,39 @@ void Camera::UpdateCamera()
 
 void Camera::SetYaw(float new_yaw)
 {
-	camYaw += new_yaw * 0.0001f;
+	camYaw += new_yaw * 0.01f;
 }
 
 void Camera::SetPitch(float new_pitch)
 {
-	camPitch += new_pitch * 0.0001f;
+	camPitch += new_pitch * 0.01f;
+	if (camPitch >= 1)
+	{
+		camPitch = 1;
+	}
+	else if (camPitch <= -1)
+	{
+		camPitch = -1;
+	}
+}
+
+void Camera::Translate(float x, float y, float z)
+{
+	moveLeftRight += x;
+	moveForwardBack += z;
+	/*moveLeftRight += y;*/
+}
+
+void Camera::Rotate(float x, float y, float z)
+{
+	camPitch += y;
+	camYaw += x;
+	if (camPitch >= 1)
+	{
+		camPitch = 1;
+	}
+	else if (camPitch <= -1)
+	{
+		camPitch = -1;
+	}
 }

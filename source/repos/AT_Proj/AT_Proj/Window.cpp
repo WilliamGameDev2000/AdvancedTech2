@@ -124,6 +124,21 @@ LRESULT Window::MessageHandler(HWND hWND, UINT msg, WPARAM wParam, LPARAM lparam
 			PostQuitMessage(0);
 			return 0;
 		}
+		case WM_KEYDOWN:
+		{
+			KB.OnKeyPressed(static_cast<unsigned char>(wParam));
+			break;
+		}
+		case WM_KEYUP:
+		{
+			KB.OnKeyReleased(static_cast<unsigned char>(wParam));
+			break;
+		}
+		case WM_CHAR:
+		{
+			KB.OnChar(static_cast<unsigned char>(wParam));
+			break;
+		}
 		case WM_MOUSEMOVE:
 		{
 			const POINTS pt = MAKEPOINTS(lparam);

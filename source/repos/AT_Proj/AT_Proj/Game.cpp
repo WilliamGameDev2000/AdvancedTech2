@@ -31,21 +31,53 @@ Game::~Game()
 
 void Game::Update()
 {
-	
-	while (!wnd.mouse.IsEmpty())
+	auto dt = Mark();
+
+	if (wnd.KB.KeyIsPressed('A'))
 	{
-		
-		const auto e = wnd.mouse.Read();
-		if (e.GetType() == Mouse::Event::Type::Move)
-		{
-			wnd.Gfx().cam.SetYaw(e.GetPosX());
-			wnd.Gfx().cam.SetPitch(e.GetPosY());
-		}
-		wnd.Gfx().cam.UpdateCamera();	
+		wnd.Gfx().cam.Translate(-speed * dt, 0.0f, 0.0f);
+	}
+	else if (wnd.KB.KeyIsPressed('D'))
+	{
+		wnd.Gfx().cam.Translate(speed * dt, 0.0f, 0.0f);
+	}
+	else if (wnd.KB.KeyIsPressed('W'))
+	{
+		wnd.Gfx().cam.Translate(0.0f, 0.0f, speed * dt);
+	}
+	else if (wnd.KB.KeyIsPressed('Q'))
+	{
+		wnd.Gfx().cam.Rotate(-speed * dt,0.0f, 0.0f );
+	}
+	else if (wnd.KB.KeyIsPressed('E'))
+	{
+		wnd.Gfx().cam.Rotate(speed * dt, 0.0f  , 0.0f);
+	}
+	else if (wnd.KB.KeyIsPressed('O'))
+	{
+		wnd.Gfx().cam.Rotate(0.0f, speed * dt, 0.0f);
+	}
+	else if (wnd.KB.KeyIsPressed('P'))
+	{
+		wnd.Gfx().cam.Rotate(0.0f, -speed * dt, 0.0f);
 	}
 
+	////REMOVE MOUSE STUFF, NOT NECESSARY
+	//while (!wnd.mouse.IsEmpty())
+	//{
+	//	
+	//	const auto e = wnd.mouse.Read();
+	//	if (e.GetType() == Mouse::Event::Type::Move)
+	//	{
+	//		//changes camera direction based on movement in each quadrent with this system
+	//		wnd.Gfx().cam.SetYaw(((((float)e.GetPosX() / 1024) * 2) - 1));
+	//		wnd.Gfx().cam.SetPitch(((((float)e.GetPosY() / 720) * 2) - 1));
+	//	}
+	//	
+	//}
+	wnd.Gfx().cam.UpdateCamera();	
 	wnd.Gfx().ClearBuffer(0.7f, 0.0f, 0.12f);
-	auto dt = Mark();
+	
 
 	for (auto& c : Cubes)
 	{

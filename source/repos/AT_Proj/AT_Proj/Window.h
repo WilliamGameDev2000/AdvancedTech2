@@ -4,6 +4,7 @@
 #include <optional>
 #include <memory>
 #include "Mouse.h"
+#include "Keyboard.h"
 
 class Window
 {
@@ -32,6 +33,7 @@ public:
 	static std::optional<int> ProcessMessge();
 	Graphics& Gfx();
 	Mouse mouse;
+	Keyboard KB;
 
 private:
 	static LRESULT CALLBACK MessageInit(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lparam) noexcept;

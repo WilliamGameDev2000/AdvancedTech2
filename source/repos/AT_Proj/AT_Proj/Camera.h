@@ -19,6 +19,9 @@ public:
 	void SetYaw(float new_yaw);
 	void SetPitch(float new_pitch);
 
+	void Translate(float x, float y, float z);
+	void Rotate(float x, float y, float z);
+
 private:
 	
 	XMVECTOR camTarget;
@@ -38,5 +41,5 @@ private:
 	float moveForwardBack = 0.0f;
 
 	float camYaw = 0.0f;
-	float camPitch = 0.0f;
+	float camPitch = 180.0f;
 };
