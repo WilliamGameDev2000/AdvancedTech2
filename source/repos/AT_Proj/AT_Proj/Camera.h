@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <DirectXMath.h>
+#include <memory>
 
 using namespace DirectX;
 class Camera
@@ -19,13 +20,15 @@ public:
 	void SetYaw(float new_yaw);
 	void SetPitch(float new_pitch);
 
-	void Translate(float x, float y, float z);
-	void Rotate(float x, float y, float z);
+	void Translate(float x, float z);
+	XMFLOAT3 getPos();
+	void Rotate(float x, float y);
 
 private:
 	
 	XMVECTOR camTarget;
-	XMVECTOR camPosition;
+	XMVECTOR camPosition = {0.0f, 1.0f, 0.0f};
+	XMFLOAT3 floatPos;
 	XMVECTOR camUp = {0.0f, 1.0f, 0.0f};
 	XMMATRIX camView;
 

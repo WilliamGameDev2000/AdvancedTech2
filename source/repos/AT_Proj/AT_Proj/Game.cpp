@@ -3,10 +3,10 @@
 #include <memory>
 #include <fstream>
 
+
 Game::Game() : wnd(1024, 720, 0, 0, "AT GAME WINDOW")
 {
 	last = steady_clock::now();
-
 	LoadLevel("MapFile");
 
 	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
@@ -35,53 +35,47 @@ void Game::Update()
 
 	if (wnd.KB.KeyIsPressed('A'))
 	{
-		wnd.Gfx().cam.Translate(-speed * dt, 0.0f, 0.0f);
+		wnd.Gfx().cam.Translate(-speed * dt, 0.0f);
 	}
 	else if (wnd.KB.KeyIsPressed('D'))
 	{
-		wnd.Gfx().cam.Translate(speed * dt, 0.0f, 0.0f);
+		wnd.Gfx().cam.Translate(speed * dt, 0.0f);
 	}
-	else if (wnd.KB.KeyIsPressed('W'))
+	if (wnd.KB.KeyIsPressed('W'))
 	{
-		wnd.Gfx().cam.Translate(0.0f, 0.0f, speed * dt);
+		wnd.Gfx().cam.Translate(0.0f, speed * dt);
 	}
-	else if (wnd.KB.KeyIsPressed('Q'))
+	else if (wnd.KB.KeyIsPressed('S'))
 	{
-		wnd.Gfx().cam.Rotate(-speed * dt,0.0f, 0.0f );
+		wnd.Gfx().cam.Translate( 0.0f, -speed * dt);
+	}
+	if (wnd.KB.KeyIsPressed('Q'))
+	{
+		wnd.Gfx().cam.Rotate(-speed * dt,0.0f);
 	}
 	else if (wnd.KB.KeyIsPressed('E'))
 	{
-		wnd.Gfx().cam.Rotate(speed * dt, 0.0f  , 0.0f);
+		wnd.Gfx().cam.Rotate(speed * dt, 0.0f);
 	}
-	else if (wnd.KB.KeyIsPressed('O'))
+	if (wnd.KB.KeyIsPressed('O'))
 	{
-		wnd.Gfx().cam.Rotate(0.0f, speed * dt, 0.0f);
+		wnd.Gfx().cam.Rotate(0.0f, speed * dt);
 	}
 	else if (wnd.KB.KeyIsPressed('P'))
 	{
-		wnd.Gfx().cam.Rotate(0.0f, -speed * dt, 0.0f);
+		wnd.Gfx().cam.Rotate(0.0f, -speed * dt);
 	}
 
-	////REMOVE MOUSE STUFF, NOT NECESSARY
-	//while (!wnd.mouse.IsEmpty())
-	//{
-	//	
-	//	const auto e = wnd.mouse.Read();
-	//	if (e.GetType() == Mouse::Event::Type::Move)
-	//	{
-	//		//changes camera direction based on movement in each quadrent with this system
-	//		wnd.Gfx().cam.SetYaw(((((float)e.GetPosX() / 1024) * 2) - 1));
-	//		wnd.Gfx().cam.SetPitch(((((float)e.GetPosY() / 720) * 2) - 1));
-	//	}
-	//	
-	//}
 	wnd.Gfx().cam.UpdateCamera();	
 	wnd.Gfx().ClearBuffer(0.7f, 0.0f, 0.12f);
-	
 
 	for (auto& c : Cubes)
 	{
-		//c->Update(dt);
+		c->Update(dt);
+		if (c->isColliding(wnd.Gfx().cam.getPos()))
+		{
+			OutputDebugString("collision \n");
+		}
 		c->Draw(wnd.Gfx());
 	}
 	

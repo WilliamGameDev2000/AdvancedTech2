@@ -77,32 +77,44 @@ Cube::Cube(Graphics& gfx)
 void Cube::Update(float dt) noexcept
 {
 	//xPos += 1;
+	collider.setBoundingBox(pos);
 }
 
 void Cube::setPos(float xpos, float ypos, float zpos)
 {
-	xPos = xpos;
-	yPos = ypos;
-	zPos = zpos;
+	pos.x = xpos;
+	pos.y = ypos;
+	pos.z = zpos;
+}
+
+DirectX::XMFLOAT3 Cube::GetPos()
+{
+	return pos;
 }
 
 void Cube::setPosX(float xpos)
 {
-	xPos = xpos;
+	pos.x = xpos;
 }
 
 void Cube::setPosY(float ypos)
 {
-	yPos = ypos;
+	pos.y = ypos;
 }
 
 void Cube::setPosZ(float zpos)
 {
-	zPos = zpos;
+	pos.z = zpos;
 }
+
+bool Cube::isColliding(DirectX::XMFLOAT3 pos1)
+{
+	return collider.checkBoundingBox(pos1);
+}
+
 
 DirectX::XMMATRIX Cube::GetTransformXM() const noexcept
 {
 	return DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f) *
-		DirectX::XMMatrixTranslation(xPos, yPos, zPos);
+		DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
 }

@@ -1,5 +1,6 @@
 #include "Camera.h"
 
+
 XMMATRIX Camera::GetView() const noexcept
 {
 	return camView;
@@ -25,6 +26,7 @@ void Camera::UpdateCamera()
 
 	camPosition += moveLeftRight * camRight;
 	camPosition += moveForwardBack * camForward;
+	XMStoreFloat3(&floatPos, camPosition);
 
 	moveLeftRight = 0.0f;
 	moveForwardBack = 0.0f;
@@ -52,14 +54,18 @@ void Camera::SetPitch(float new_pitch)
 	}
 }
 
-void Camera::Translate(float x, float y, float z)
+void Camera::Translate(float x, float z)
 {
 	moveLeftRight += x;
 	moveForwardBack += z;
-	/*moveLeftRight += y;*/
 }
 
-void Camera::Rotate(float x, float y, float z)
+XMFLOAT3 Camera::getPos()
+{
+	return floatPos;
+}
+
+void Camera::Rotate(float x, float y)
 {
 	camPitch += y;
 	camYaw += x;
