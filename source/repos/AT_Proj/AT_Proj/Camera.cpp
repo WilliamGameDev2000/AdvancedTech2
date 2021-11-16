@@ -36,28 +36,21 @@ void Camera::UpdateCamera()
 	camView = XMMatrixLookAtLH(camPosition, camTarget, camUp);
 }
 
-void Camera::SetYaw(float new_yaw)
-{
-	camYaw += new_yaw * 0.01f;
-}
-
-void Camera::SetPitch(float new_pitch)
-{
-	camPitch += new_pitch * 0.01f;
-	if (camPitch >= 1)
-	{
-		camPitch = 1;
-	}
-	else if (camPitch <= -1)
-	{
-		camPitch = -1;
-	}
-}
 
 void Camera::Translate(float x, float z)
 {
 	moveLeftRight += x;
 	moveForwardBack += z;
+}
+
+float Camera::getForwardBack()
+{
+	return moveForwardBack;
+}
+
+float Camera::getLeftRight()
+{
+	return moveLeftRight;
 }
 
 XMFLOAT3 Camera::getPos()

@@ -12,7 +12,7 @@ public:
 	void setPosX(float xpos);
 	void setPosY(float ypos);
 	void setPosZ(float zpos);
-	bool isColliding(DirectX::XMFLOAT3 pos1);
+	bool isColliding(DirectX::XMFLOAT3 pos1, float x_size, float y_size, float z_size);
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 private:
 	// positional

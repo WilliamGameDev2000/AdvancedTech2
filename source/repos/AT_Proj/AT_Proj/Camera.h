@@ -17,17 +17,17 @@ public:
 	XMMATRIX GetView() const noexcept;
 	void SetView(XMMATRIX view);
 	void UpdateCamera();
-	void SetYaw(float new_yaw);
-	void SetPitch(float new_pitch);
 
 	void Translate(float x, float z);
+	float getForwardBack();
+	float getLeftRight();
 	XMFLOAT3 getPos();
 	void Rotate(float x, float y);
 
 private:
 	
 	XMVECTOR camTarget;
-	XMVECTOR camPosition = {0.0f, 1.0f, 0.0f};
+	XMVECTOR camPosition = {5.0f, 0.0f, 2.0f};
 	XMFLOAT3 floatPos;
 	XMVECTOR camUp = {0.0f, 1.0f, 0.0f};
 	XMMATRIX camView;

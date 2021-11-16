@@ -107,9 +107,9 @@ void Cube::setPosZ(float zpos)
 	pos.z = zpos;
 }
 
-bool Cube::isColliding(DirectX::XMFLOAT3 pos1)
+bool Cube::isColliding(DirectX::XMFLOAT3 pos1, float x_size, float y_size, float z_size)
 {
-	return collider.checkBoundingBox(pos1);
+	return collider.checkBoundingBox(pos1, x_size,  y_size,  z_size);
 }
 
 

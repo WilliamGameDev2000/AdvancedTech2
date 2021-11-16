@@ -21,6 +21,9 @@ private:
 	void LoadWall(std::string levelFile);
 	void LoadFloor(std::string levelFile);
 
+	enum direction {stationary = -1, forward = 0, back = 1, left = 2, right = 3};
+	direction traveling = stationary;
+
 	Window wnd;
 	std::chrono::steady_clock::time_point last;
 	float rotation;

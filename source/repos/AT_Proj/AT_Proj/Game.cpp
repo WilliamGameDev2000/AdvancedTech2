@@ -36,22 +36,26 @@ void Game::Update()
 	if (wnd.KB.KeyIsPressed('A'))
 	{
 		wnd.Gfx().cam.Translate(-speed * dt, 0.0f);
+		traveling = left;
 	}
 	else if (wnd.KB.KeyIsPressed('D'))
 	{
 		wnd.Gfx().cam.Translate(speed * dt, 0.0f);
+		traveling = right;
 	}
 	if (wnd.KB.KeyIsPressed('W'))
 	{
 		wnd.Gfx().cam.Translate(0.0f, speed * dt);
+		traveling = forward;
 	}
 	else if (wnd.KB.KeyIsPressed('S'))
 	{
-		wnd.Gfx().cam.Translate( 0.0f, -speed * dt);
+		wnd.Gfx().cam.Translate(0.0f, -speed * dt);
+		traveling = back;
 	}
 	if (wnd.KB.KeyIsPressed('Q'))
 	{
-		wnd.Gfx().cam.Rotate(-speed * dt,0.0f);
+		wnd.Gfx().cam.Rotate(-speed * dt, 0.0f);
 	}
 	else if (wnd.KB.KeyIsPressed('E'))
 	{
@@ -66,19 +70,43 @@ void Game::Update()
 		wnd.Gfx().cam.Rotate(0.0f, -speed * dt);
 	}
 
-	wnd.Gfx().cam.UpdateCamera();	
-	wnd.Gfx().ClearBuffer(0.7f, 0.0f, 0.12f);
 
+	wnd.Gfx().ClearBuffer(0.7f, 0.0f, 0.12f);
 	for (auto& c : Cubes)
 	{
 		c->Update(dt);
-		if (c->isColliding(wnd.Gfx().cam.getPos()))
-		{
-			OutputDebugString("collision \n");
+		if (c->isColliding(wnd.Gfx().cam.getPos(), 0.5, 0.5, 0.5))
+		{//stop camera moving
+			if (wnd.Gfx().cam.getForwardBack() != 0 || wnd.Gfx().cam.getLeftRight() != 0)
+			{
+				wnd.Gfx().cam.Translate(-1 * wnd.Gfx().cam.getLeftRight(), -1 * wnd.Gfx().cam.getForwardBack());
+			}
+			else
+			{
+				if (traveling == forward)
+				{
+					wnd.Gfx().cam.Translate(0.0f, wnd.Gfx().cam.getForwardBack() - 0.1);
+				}
+				if (traveling == back)
+				{
+					wnd.Gfx().cam.Translate(0.0f, wnd.Gfx().cam.getForwardBack() + 0.1);
+				}
+				if (traveling == left)
+				{
+					wnd.Gfx().cam.Translate(wnd.Gfx().cam.getLeftRight() + 0.1, 0.0f);
+				}
+				if (traveling == right)
+				{
+					wnd.Gfx().cam.Translate(wnd.Gfx().cam.getLeftRight() - 0.1, 0.0f);
+				}	
+				traveling = stationary;
+			}
+			
 		}
 		c->Draw(wnd.Gfx());
 	}
 	
+	wnd.Gfx().cam.UpdateCamera();
 	wnd.Gfx().EndFrame();
 }
 
