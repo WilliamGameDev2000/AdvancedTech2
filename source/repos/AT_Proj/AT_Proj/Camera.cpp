@@ -70,4 +70,20 @@ void Camera::Rotate(float x, float y)
 	{
 		camPitch = -1;
 	}
+
+	float max = 3.130872f * 2;
+	float min = -3.130872f * 2;
+	if (camYaw >= max)
+	{
+		camYaw = 0;
+	}
+	else if (camYaw <= min)
+	{
+		camYaw = 0;
+	}
+}
+
+float Camera::getYaw()
+{
+	return camYaw;
 }

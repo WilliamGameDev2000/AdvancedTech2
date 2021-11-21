@@ -1,22 +1,17 @@
-#include "Sphere.h"
+#include "Plane.h"
 #include "BindableBase.h"
 
-Sphere::Sphere(Graphics& gfx)
+
+Plane::Plane(Graphics& gfx)
 {
 	if (!IsStaticInitialized())
 	{
 		const std::vector<Vertex> vertices =
 		{
-			//Make sphere shaped
-
-			/*{ -1.0f,-1.0f,-1.0f },
-			{ 1.0f,-1.0f,-1.0f },
-			{ -1.0f,1.0f,-1.0f },
-			{ 1.0f,1.0f,-1.0f },
-			{ -1.0f,-1.0f,1.0f },
-			{ 1.0f,-1.0f,1.0f },
-			{ -1.0f,1.0f,1.0f },
-			{ 1.0f,1.0f,1.0f },*/
+			{ -1.0f,-1.0f,0.0f },
+			{ -1.0f,1.0f,0.0f },
+			{ 1.0f,-1.0f,0.0f },
+			{ 1.0f,1.0f,0.0f },
 		};
 		AddStaticBind(std::make_unique<VertexBuffer>(gfx, vertices));
 
@@ -28,12 +23,8 @@ Sphere::Sphere(Graphics& gfx)
 
 		const std::vector<unsigned short> indices =
 		{
-			0,2,1, 2,3,1,
-			1,3,5, 3,7,5,
-			2,6,3, 3,6,7,
-			4,5,7, 4,7,6,
-			0,4,2, 2,4,6,
-			0,1,4, 1,5,4
+			0, 2, 1,
+			2, 3, 1
 		};
 		AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, indices));
 
@@ -45,17 +36,12 @@ Sphere::Sphere(Graphics& gfx)
 				float g;
 				float b;
 				float a;
-			} face_colors[6];
+			} face_colors[1];
 		};
 		const ConstantBuffer2 cb2 =
 		{
 			{
-				{ 1.0f,0.0f,1.0f },
-				{ 1.0f,0.0f,0.0f },
-				{ 0.0f,1.0f,0.0f },
-				{ 0.0f,0.0f,1.0f },
-				{ 1.0f,1.0f,0.0f },
-				{ 0.0f,1.0f,1.0f },
+				{ 1.0f,1.0f,1.0f }
 			}
 		};
 		AddStaticBind(std::make_unique<PixelConstantBuffer<ConstantBuffer2>>(gfx, cb2));
@@ -76,35 +62,23 @@ Sphere::Sphere(Graphics& gfx)
 	AddBind(std::make_unique<TransformCbuff>(gfx, *this));
 }
 
-void Sphere::Update(float dt) noexcept
+void Plane::Update(float dt) noexcept
 {
-	//xPos += 1;
+	//rotate towards player
+	//not quite done, need a new method
+	transform = DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
+	transform = DirectX::XMMatrixRotationY(dt) * transform;
 }
 
-void Sphere::setPos(float xpos, float ypos, float zpos)
+void Plane::setPos(float xpos, float ypos, float zpos)
 {
-	xPos = xpos;
-	yPos = ypos;
-	zPos = zpos;
+	pos.x = xpos;
+	pos.y = ypos;
+	pos.z = zpos;
 }
 
-void Sphere::setPosX(float xpos)
-{
-	xPos = xpos;
-}
-
-void Sphere::setPosY(float ypos)
-{
-	yPos = ypos;
-}
-
-void Sphere::setPosZ(float zpos)
-{
-	zPos = zpos;
-}
-
-DirectX::XMMATRIX Sphere::GetTransformXM() const noexcept
+DirectX::XMMATRIX Plane::GetTransformXM() const noexcept
 {
 	return DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f) *
-		DirectX::XMMatrixTranslation(xPos, yPos, zPos);
+		DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
 }

@@ -164,11 +164,14 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="Keyboard.cpp" />
-    <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="Plane.cpp" />
+    <ClCompile Include="Textures.cpp" />
+    <ClCompile Include="TextureSampler.cpp" />
     <ClCompile Include="Topology.cpp" />
     <ClCompile Include="TransformCBuff.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="VertexShader.cpp" />
+    <ClCompile Include="WICTextureLoader.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -187,11 +190,14 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectDrawable.h" />
     <ClInclude Include="PixelShader.h" />
-    <ClInclude Include="Sphere.h" />
+    <ClInclude Include="Plane.h" />
+    <ClInclude Include="Textures.h" />
+    <ClInclude Include="TextureSampler.h" />
     <ClInclude Include="Topology.h" />
     <ClInclude Include="TransformCBuff.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VertexShader.h" />
+    <ClInclude Include="WICTextureLoader.h" />
     <ClInclude Include="WillWin.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

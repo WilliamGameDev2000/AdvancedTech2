@@ -21,6 +21,7 @@ public:
 	void Translate(float x, float z);
 	float getForwardBack();
 	float getLeftRight();
+	float getYaw();
 	XMFLOAT3 getPos();
 	void Rotate(float x, float y);
 

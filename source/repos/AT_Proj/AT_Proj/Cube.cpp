@@ -7,14 +7,14 @@ Cube::Cube(Graphics& gfx)
 	{
 		const std::vector<Vertex> vertices =
 		{
-			{ -1.0f,-1.0f,-1.0f },
-			{ 1.0f,-1.0f,-1.0f },
-			{ -1.0f,1.0f,-1.0f },
-			{ 1.0f,1.0f,-1.0f },
-			{ -1.0f,-1.0f,1.0f },
-			{ 1.0f,-1.0f,1.0f },
-			{ -1.0f,1.0f,1.0f },
-			{ 1.0f,1.0f,1.0f },
+			{ -scale.x,-scale.y,-scale.z },
+			{ scale.x,-scale.y,-scale.z },
+			{ -scale.x,scale.y,-scale.z },
+			{ scale.x,scale.y,-scale.z },
+			{ -scale.x,-scale.y,scale.z },
+			{ scale.x,-scale.y,scale.z },
+			{ -scale.x,scale.y,scale.z },
+			{ scale.x,scale.y,scale.z },
 		};
 		AddStaticBind(std::make_unique<VertexBuffer>(gfx, vertices));
 
@@ -48,12 +48,12 @@ Cube::Cube(Graphics& gfx)
 		const ConstantBuffer2 cb2 =
 		{
 			{
-				{ 1.0f,0.0f,1.0f },
-				{ 1.0f,0.0f,0.0f },
-				{ 0.0f,1.0f,0.0f },
-				{ 0.0f,0.0f,1.0f },
-				{ 1.0f,1.0f,0.0f },
-				{ 0.0f,1.0f,1.0f },
+				{ 1.0f,0.95f,1.0f },
+				{ 1.0f,1.0f,0.95f },
+				{ 0.0f,0.0f,0.0f },
+				{ 0.95f,1.0f,1.0f },
+				{ 1.0f,1.0f,1.0f },
+				{ 1.0f,1.0f,0.95f},
 			}
 		};
 		AddStaticBind(std::make_unique<PixelConstantBuffer<ConstantBuffer2>>(gfx, cb2));
@@ -76,20 +76,35 @@ Cube::Cube(Graphics& gfx)
 
 void Cube::Update(float dt) noexcept
 {
-	//xPos += 1;
-	collider.setBoundingBox(pos);
+	if (is_bullet)
+	{
+		setPos(sin(objYaw) * dt, 0, cos(objYaw) * dt);
+	}
 }
 
 void Cube::setPos(float xpos, float ypos, float zpos)
 {
-	pos.x = xpos;
-	pos.y = ypos;
-	pos.z = zpos;
+	pos.x += xpos;
+	pos.y += ypos;
+	pos.z += zpos;
+	collider.setBoundingBox(pos);
+}
+
+void Cube::setScale(float xscale, float yscale, float zscale)
+{
+	scale.x = xscale;
+	scale.y = yscale;
+	scale.z = zscale;
 }
 
 DirectX::XMFLOAT3 Cube::GetPos()
 {
 	return pos;
+}
+
+void Cube::setRot(float new_rot)
+{
+	objYaw = new_rot;
 }
 
 void Cube::setPosX(float xpos)
@@ -107,6 +122,11 @@ void Cube::setPosZ(float zpos)
 	pos.z = zpos;
 }
 
+void Cube::setBullet()
+{
+	is_bullet = true;
+}
+
 bool Cube::isColliding(DirectX::XMFLOAT3 pos1, float x_size, float y_size, float z_size)
 {
 	return collider.checkBoundingBox(pos1, x_size,  y_size,  z_size);
@@ -115,6 +135,7 @@ bool Cube::isColliding(DirectX::XMFLOAT3 pos1, float x_size, float y_size, float
 
 DirectX::XMMATRIX Cube::GetTransformXM() const noexcept
 {
-	return DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f) *
+	return DirectX::XMMatrixRotationRollPitchYaw(0.0f, objYaw, 0.0f) *
+		DirectX::XMMatrixScaling(scale.x, scale.y, scale.z) *
 		DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
 }

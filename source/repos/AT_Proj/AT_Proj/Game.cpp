@@ -1,5 +1,4 @@
 #include "Game.h"
-#include "Cube.h"
 #include <memory>
 #include <fstream>
 
@@ -69,14 +68,23 @@ void Game::Update()
 	{
 		wnd.Gfx().cam.Rotate(0.0f, -speed * dt);
 	}
+	if (wnd.KB.KeyIsPressed(' '))
+	{
+		Bullets.push_back(std::make_unique<Cube>(wnd.Gfx()));
+		Bullets[numBullets]->setBullet();
+		Bullets[numBullets]->setRot(wnd.Gfx().cam.getYaw());
+		Bullets[numBullets]->setScale(0.2f, 0.2f, 0.2f);
+		Bullets[numBullets]->setPos(wnd.Gfx().cam.getPos().x + sin(wnd.Gfx().cam.getYaw()), 0, wnd.Gfx().cam.getPos().z + cos(wnd.Gfx().cam.getYaw()));
+		numBullets++;
+		
+	}
 
 
 	wnd.Gfx().ClearBuffer(0.7f, 0.0f, 0.12f);
 	for (auto& c : Cubes)
 	{
-		c->Update(dt);
 		if (c->isColliding(wnd.Gfx().cam.getPos(), 0.5, 0.5, 0.5))
-		{//stop camera moving
+		{
 			if (wnd.Gfx().cam.getForwardBack() != 0 || wnd.Gfx().cam.getLeftRight() != 0)
 			{
 				wnd.Gfx().cam.Translate(-1 * wnd.Gfx().cam.getLeftRight(), -1 * wnd.Gfx().cam.getForwardBack());
@@ -105,6 +113,22 @@ void Game::Update()
 		}
 		c->Draw(wnd.Gfx());
 	}
+	for (auto& e : Enemies)
+	{
+		e->Draw(wnd.Gfx());
+		//e->Update(dt);
+	}
+	for (auto& B : Bullets)
+	{
+		//if(shot)
+		B->Draw(wnd.Gfx());
+		B->Update(dt);
+		/*if (B->isColliding(wnd.Gfx().cam.getPos(), 0.5, 0.5, 0.5))
+		{
+			OutputDebugString("Shot");
+		}*/
+	}
+	
 	
 	wnd.Gfx().cam.UpdateCamera();
 	wnd.Gfx().EndFrame();
@@ -122,6 +146,7 @@ void Game::LoadLevel(std::string level_file)
 {
 	LoadWall(level_file);
 	LoadFloor(level_file);
+	LoadEnemies(level_file);
 }
 
 void Game::LoadWall(std::string level_file)
@@ -176,4 +201,31 @@ void Game::LoadFloor(std::string level_file)
 	levelFile.close();
 }
 
+void Game::LoadEnemies(std::string level_file)
+{
+	column = 0;
+	row = 0;
+	std::ifstream levelFile;
+	levelFile.open(level_file + ".txt");
+	while (!levelFile.eof())
+	{
+		if (levelFile.peek() == '\n')
+		{
+			column = 0;
+			row++;
+		}
 
+		if (levelFile.get() == 'e')
+		{
+			Enemies.push_back(std::make_unique<Plane>(wnd.Gfx()));
+			Enemies[numEnemies]->setPos((column * 2) - 11, 0, (row * 2) - 6);
+			numEnemies++;
+			Cubes.push_back(std::make_unique<Cube>(wnd.Gfx()));
+			Cubes[numCubes]->setPos((column * 2) - 11, -2, (row * 2) - 6);
+			numCubes++;
+		}
+
+		column++;
+	}
+	levelFile.close();
+}
