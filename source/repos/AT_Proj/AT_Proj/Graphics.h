@@ -28,7 +28,7 @@ public:
 
 	Camera cam;
 private:
-	DirectX::XMMATRIX projection;
+	DirectX::XMMATRIX projection = {};
 
 	Microsoft::WRL::ComPtr<ID3D11Device> pDevice = nullptr;
 	Microsoft::WRL::ComPtr<IDXGISwapChain> pChain = nullptr;

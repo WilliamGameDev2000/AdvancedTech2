@@ -108,6 +108,9 @@
     <ClCompile Include="TextureSampler.cpp">
       <Filter>Source Files\Textures</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WillWin.h">
@@ -184,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="TextureSampler.h">
       <Filter>Header Files\Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

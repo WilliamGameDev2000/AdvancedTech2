@@ -41,7 +41,7 @@ Plane::Plane(Graphics& gfx)
 		const ConstantBuffer2 cb2 =
 		{
 			{
-				{ 1.0f,1.0f,1.0f }
+				{ 0.5f,0.5f,0.5f }
 			}
 		};
 		AddStaticBind(std::make_unique<PixelConstantBuffer<ConstantBuffer2>>(gfx, cb2));
@@ -65,9 +65,8 @@ Plane::Plane(Graphics& gfx)
 void Plane::Update(float dt) noexcept
 {
 	//rotate towards player
-	//not quite done, need a new method
-	transform = DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
-	transform = DirectX::XMMatrixRotationY(dt) * transform;
+	//not quite done, need a new 
+	//setPos(sin(objYaw), 0, cos(objYaw));
 }
 
 void Plane::setPos(float xpos, float ypos, float zpos)
@@ -77,8 +76,25 @@ void Plane::setPos(float xpos, float ypos, float zpos)
 	pos.z = zpos;
 }
 
+void Plane::setRot(XMFLOAT3 look_pos)
+{
+	XMVECTOR eye_vec = XMVectorSet(pos.x, pos.y, pos.z, 0);
+	XMVECTOR target_vec = XMVectorSet(look_pos.x, look_pos.y, look_pos.z, 0);
+
+	look_at = DirectX::XMMatrixLookAtRH(eye_vec, target_vec, up);
+}
+
+DirectX::XMMATRIX Plane::getRot() const
+{
+	return look_at;
+}
+
 DirectX::XMMATRIX Plane::GetTransformXM() const noexcept
 {
-	return DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f) *
+	return getRot() *
 		DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
+}
+
+void Plane::LoadTexture() noexcept
+{
 }

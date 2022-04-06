@@ -18,12 +18,14 @@ public:
 	void setBullet();
 	bool isColliding(DirectX::XMFLOAT3 pos1, float x_size, float y_size, float z_size);
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
+	void LoadTexture() noexcept override;
 private:
 	// positional
 	DirectX::XMFLOAT3 pos = {0,0,0};
-	float objYaw;
+	float objYaw = 0;
 	DirectX::XMFLOAT3 scale = {1,1,1};
-	DirectX::XMMATRIX rot;
+	DirectX::XMMATRIX rot = {};
 	Collision collider;
+	//Textures texture;
 	bool is_bullet = false;
 };

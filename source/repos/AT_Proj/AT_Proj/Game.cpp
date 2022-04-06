@@ -116,17 +116,22 @@ void Game::Update()
 	for (auto& e : Enemies)
 	{
 		e->Draw(wnd.Gfx());
-		//e->Update(dt);
+		e->setRot(wnd.Gfx().cam.getPos());
+		e->Update(dt);
 	}
 	for (auto& B : Bullets)
 	{
 		//if(shot)
 		B->Draw(wnd.Gfx());
 		B->Update(dt);
-		/*if (B->isColliding(wnd.Gfx().cam.getPos(), 0.5, 0.5, 0.5))
+		/*for (auto& c : Cubes)
 		{
-			OutputDebugString("Shot");
+			if (B->isColliding(c->GetPos(), 0.5, 0.5, 0.5))
+			{
+				destroy cube from scene but keep in the list?
+			}
 		}*/
+		
 	}
 	
 	

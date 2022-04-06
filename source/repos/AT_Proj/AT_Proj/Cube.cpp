@@ -78,7 +78,7 @@ void Cube::Update(float dt) noexcept
 {
 	if (is_bullet)
 	{
-		setPos(sin(objYaw) * dt, 0, cos(objYaw) * dt);
+		setPos(sin(objYaw) * 2 * dt, 0, cos(objYaw) * 2 * dt);
 	}
 }
 
@@ -138,4 +138,8 @@ DirectX::XMMATRIX Cube::GetTransformXM() const noexcept
 	return DirectX::XMMatrixRotationRollPitchYaw(0.0f, objYaw, 0.0f) *
 		DirectX::XMMatrixScaling(scale.x, scale.y, scale.z) *
 		DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
+}
+
+void Cube::LoadTexture() noexcept
+{
 }
