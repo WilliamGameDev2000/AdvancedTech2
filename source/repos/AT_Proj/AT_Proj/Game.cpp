@@ -8,8 +8,11 @@ Game::Game() : wnd(1024, 720, 0, 0, "AT GAME WINDOW")
 	last = steady_clock::now();
 	LoadLevel("MapFile");
 
+	player = std::make_unique<Player>(wnd.Gfx().cam, wnd.KB);
 	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
-	wnd.Gfx().SetCamera(DirectX::XMMatrixTranslation(0.0f, 0.0f, 20.0f));
+	wnd.Gfx().SetCamera(player->PlayerCam().GetView());
+	
+	
 }
 
 int Game::Init()
@@ -32,42 +35,6 @@ void Game::Update()
 {
 	auto dt = Mark();
 
-	if (wnd.KB.KeyIsPressed('A'))
-	{
-		wnd.Gfx().cam.Translate(-speed * dt, 0.0f);
-		traveling = left;
-	}
-	else if (wnd.KB.KeyIsPressed('D'))
-	{
-		wnd.Gfx().cam.Translate(speed * dt, 0.0f);
-		traveling = right;
-	}
-	if (wnd.KB.KeyIsPressed('W'))
-	{
-		wnd.Gfx().cam.Translate(0.0f, speed * dt);
-		traveling = forward;
-	}
-	else if (wnd.KB.KeyIsPressed('S'))
-	{
-		wnd.Gfx().cam.Translate(0.0f, -speed * dt);
-		traveling = back;
-	}
-	if (wnd.KB.KeyIsPressed('Q'))
-	{
-		wnd.Gfx().cam.Rotate(-speed * dt, 0.0f);
-	}
-	else if (wnd.KB.KeyIsPressed('E'))
-	{
-		wnd.Gfx().cam.Rotate(speed * dt, 0.0f);
-	}
-	if (wnd.KB.KeyIsPressed('O'))
-	{
-		wnd.Gfx().cam.Rotate(0.0f, speed * dt);
-	}
-	else if (wnd.KB.KeyIsPressed('P'))
-	{
-		wnd.Gfx().cam.Rotate(0.0f, -speed * dt);
-	}
 	if (wnd.KB.KeyIsPressed(' '))
 	{
 		Bullets.push_back(std::make_unique<Cube>(wnd.Gfx()));
@@ -76,38 +43,37 @@ void Game::Update()
 		Bullets[numBullets]->setScale(0.2f, 0.2f, 0.2f);
 		Bullets[numBullets]->setPos(wnd.Gfx().cam.getPos().x + sin(wnd.Gfx().cam.getYaw()), 0, wnd.Gfx().cam.getPos().z + cos(wnd.Gfx().cam.getYaw()));
 		numBullets++;
-		
 	}
 
 
 	wnd.Gfx().ClearBuffer(0.7f, 0.0f, 0.12f);
 	for (auto& c : Cubes)
 	{
-		if (c->isColliding(wnd.Gfx().cam.getPos(), 0.5, 0.5, 0.5))
+		if (c->isColliding(player->GetPos(), 0.5, 0.5, 0.5))
 		{
-			if (wnd.Gfx().cam.getForwardBack() != 0 || wnd.Gfx().cam.getLeftRight() != 0)
+			if (player->PlayerCam().getForwardBack() != 0 || player->PlayerCam().getLeftRight() != 0)
 			{
-				wnd.Gfx().cam.Translate(-1 * wnd.Gfx().cam.getLeftRight(), -1 * wnd.Gfx().cam.getForwardBack());
+				player->PlayerCam().Translate(-1 * player->PlayerCam().getLeftRight(), -1 * player->PlayerCam().getForwardBack());
 			}
 			else
 			{
-				if (traveling == forward)
+				if (player->GetDir() == Player::direction::forward)
 				{
-					wnd.Gfx().cam.Translate(0.0f, wnd.Gfx().cam.getForwardBack() - 0.1);
+					player->PlayerCam().Translate(0.0f, player->PlayerCam().getForwardBack() - 0.1);
 				}
-				if (traveling == back)
+				if (player->GetDir() == Player::direction::back)
 				{
-					wnd.Gfx().cam.Translate(0.0f, wnd.Gfx().cam.getForwardBack() + 0.1);
+					player->PlayerCam().Translate(0.0f, player->PlayerCam().getForwardBack() + 0.1);
 				}
-				if (traveling == left)
+				if (player->GetDir() == Player::direction::left)
 				{
-					wnd.Gfx().cam.Translate(wnd.Gfx().cam.getLeftRight() + 0.1, 0.0f);
+					player->PlayerCam().Translate(player->PlayerCam().getLeftRight() + 0.1, 0.0f);
 				}
-				if (traveling == right)
+				if (player->GetDir() == Player::direction::right)
 				{
-					wnd.Gfx().cam.Translate(wnd.Gfx().cam.getLeftRight() - 0.1, 0.0f);
+					player->PlayerCam().Translate(player->PlayerCam().getLeftRight() - 0.1, 0.0f);
 				}	
-				traveling = stationary;
+				player->GetDir() == Player::direction::stationary;
 			}
 			
 		}
@@ -134,8 +100,9 @@ void Game::Update()
 		
 	}
 	
-	
-	wnd.Gfx().cam.UpdateCamera();
+	player->Move(dt);
+
+	player->PlayerCam().UpdateCamera();
 	wnd.Gfx().EndFrame();
 }
 
