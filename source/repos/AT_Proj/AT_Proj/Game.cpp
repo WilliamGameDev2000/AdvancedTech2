@@ -8,7 +8,7 @@ Game::Game() : wnd(1024, 720, 0, 0, "AT GAME WINDOW")
 	last = steady_clock::now();
 	LoadLevel("MapFile");
 
-	player = std::make_unique<Player>(wnd.Gfx().cam, wnd.KB);
+	player = std::make_unique<Player>(wnd.Gfx().cam, wnd.KB, wnd);
 	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 	wnd.Gfx().SetCamera(player->PlayerCam().GetView());
 	
@@ -34,19 +34,24 @@ Game::~Game()
 void Game::Update()
 {
 	auto dt = Mark();
+	
+	wnd.Gfx().ClearBuffer(0.7f, 0.0f, 0.12f);
 
 	if (wnd.KB.KeyIsPressed(' '))
 	{
-		Bullets.push_back(std::make_unique<Cube>(wnd.Gfx()));
-		Bullets[numBullets]->setBullet();
-		Bullets[numBullets]->setRot(wnd.Gfx().cam.getYaw());
-		Bullets[numBullets]->setScale(0.2f, 0.2f, 0.2f);
-		Bullets[numBullets]->setPos(wnd.Gfx().cam.getPos().x + sin(wnd.Gfx().cam.getYaw()), 0, wnd.Gfx().cam.getPos().z + cos(wnd.Gfx().cam.getYaw()));
-		numBullets++;
+		if (player->GetAmmoAmount() <= 0)
+		{
+			player->ReloadGun();
+		}
+		else
+		{
+			Bullets.push_back(std::make_unique<Cube>(wnd.Gfx()));
+			player->Shoot(Bullets[Bullets.size() - 1]);
+		}
 	}
 
 
-	wnd.Gfx().ClearBuffer(0.7f, 0.0f, 0.12f);
+	
 	for (auto& c : Cubes)
 	{
 		if (c->isColliding(player->GetPos(), 0.5, 0.5, 0.5))
@@ -102,7 +107,7 @@ void Game::Update()
 	
 	player->Move(dt);
 
-	player->PlayerCam().UpdateCamera();
+	//player->PlayerCam().UpdateCamera();
 	wnd.Gfx().EndFrame();
 }
 

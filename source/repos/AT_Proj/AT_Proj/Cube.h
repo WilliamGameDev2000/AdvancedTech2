@@ -28,4 +28,5 @@ private:
 	Collision collider;
 	//Textures texture;
 	bool is_bullet = false;
+	float life_time = 3.5f;
 };

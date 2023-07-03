@@ -79,6 +79,13 @@ void Cube::Update(float dt) noexcept
 	if (is_bullet)
 	{
 		setPos(sin(objYaw) * 2 * dt, 0, cos(objYaw) * 2 * dt);
+
+		life_time -= dt;
+
+		if (life_time <= 0)
+		{
+			//destroy self
+		}
 	}
 }
 

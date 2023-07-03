@@ -1,8 +1,14 @@
 #include "Player.h"
+#include "Cube.h"
 
 void Player::ReduceAmmo()
 {
 	ammo--;
+}
+
+void Player::ReloadGun()
+{
+	ammo = clipSize;
 }
 
 void Player::ReduceHealth(float damage)
@@ -10,10 +16,15 @@ void Player::ReduceHealth(float damage)
 	health -= damage;
 }
 
-void Player::Shoot()
+void Player::Shoot(std::unique_ptr<class Cube> &bullet)
 {
 	//shoot
+	bullet->setBullet();
+	bullet->setRot(wnd.Gfx().cam.getYaw());
+	bullet->setScale(0.2f, 0.2f, 0.2f);
+	bullet->setPos(wnd.Gfx().cam.getPos().x + sin(wnd.Gfx().cam.getYaw()), 0, wnd.Gfx().cam.getPos().z + cos(wnd.Gfx().cam.getYaw()));
 
+	ReduceAmmo();
 }
 
 XMFLOAT3 Player::GetPos()
@@ -63,8 +74,14 @@ void Player::Move(float delta)
 	}
 
 	Translate(traveling);
+	playerCam.UpdateCamera();
 	playerPos = playerCam.getPos();
 	traveling = direction::stationary;
+}
+
+int Player::GetAmmoAmount()
+{
+	return ammo;
 }
 
 void Player::Translate(direction dir)
