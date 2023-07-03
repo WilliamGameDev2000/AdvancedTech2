@@ -18,13 +18,16 @@ void Player::ReduceHealth(float damage)
 
 void Player::Shoot(std::unique_ptr<class Cube> &bullet)
 {
-	//shoot
-	bullet->setBullet();
-	bullet->setRot(wnd.Gfx().cam.getYaw());
-	bullet->setScale(0.2f, 0.2f, 0.2f);
-	bullet->setPos(wnd.Gfx().cam.getPos().x + sin(wnd.Gfx().cam.getYaw()), 0, wnd.Gfx().cam.getPos().z + cos(wnd.Gfx().cam.getYaw()));
+	if (can_shoot)
+	{
+		bullet->setBullet();
+		bullet->setRot(wnd.Gfx().cam.getYaw());
+		bullet->setScale(0.2f, 0.2f, 0.2f);
+		bullet->setPos(wnd.Gfx().cam.getPos().x + sin(wnd.Gfx().cam.getYaw()), 0, wnd.Gfx().cam.getPos().z + cos(wnd.Gfx().cam.getYaw()));
 
-	ReduceAmmo();
+		can_shoot = false;
+		ReduceAmmo();
+	}
 }
 
 XMFLOAT3 Player::GetPos()
@@ -77,6 +80,19 @@ void Player::Move(float delta)
 	playerCam.UpdateCamera();
 	playerPos = playerCam.getPos();
 	traveling = direction::stationary;
+
+	if (!can_shoot)
+	{
+		if (fire_rate > 0)
+		{
+			fire_rate -= dt;
+		}
+		else
+		{
+			fire_rate = 1.1f;
+			can_shoot = true;
+		}
+	}
 }
 
 int Player::GetAmmoAmount()

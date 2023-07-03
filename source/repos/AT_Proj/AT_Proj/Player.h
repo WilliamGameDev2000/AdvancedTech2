@@ -32,8 +32,12 @@ private:
 	Window& wnd;
 	XMFLOAT3 playerPos{};
 	float health = 100;
+	//bullets
 	int ammo = 5;
 	int clipSize = 5;
+	float fire_rate = 1.1f;
+	bool can_shoot = true;
+
 	float speed = 2.5f;
 	float dt = 0;
 };
