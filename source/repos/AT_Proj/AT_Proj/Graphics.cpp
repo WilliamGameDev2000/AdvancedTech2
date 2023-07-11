@@ -59,8 +59,8 @@ Graphics::Graphics(HWND hWnd)
 
 	wrl::ComPtr<ID3D11Texture2D> pDepthStencil;
 	D3D11_TEXTURE2D_DESC depthDesc = {};
-	depthDesc.Width = 1024u;
-	depthDesc.Height = 720u;
+	depthDesc.Width = 1920u;
+	depthDesc.Height = 1080u;
 	depthDesc.MipLevels = 1u;
 	depthDesc.ArraySize = 1u;
 	depthDesc.Format = DXGI_FORMAT_D32_FLOAT;

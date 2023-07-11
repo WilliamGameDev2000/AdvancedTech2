@@ -14,9 +14,10 @@ public:
 	void ReduceAmmo();
 	void ReloadGun();
 	void ReduceHealth(float damage);
-	void Move(float delta);
+	void Update(float delta);
 
 	int GetAmmoAmount();
+	bool GetCanShoot();
 
 	void SetWindow(class Window window);
 
@@ -26,6 +27,7 @@ public:
 	
 private:
 	direction traveling = direction::stationary;
+	void Move();
 	void Translate(direction dir);
 	Camera& playerCam;
 	Keyboard& input;

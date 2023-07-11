@@ -36,6 +36,11 @@ void Camera::UpdateCamera()
 	camView = XMMatrixLookAtLH(camPosition, camTarget, camUp);
 }
 
+void Camera::SetPos(XMVECTOR newPos)
+{
+	camPosition = newPos;
+}
+
 
 void Camera::Translate(float x, float z)
 {

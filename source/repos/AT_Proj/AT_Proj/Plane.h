@@ -1,7 +1,8 @@
 #pragma once
 #include "ObjectDrawable.h"
 //#include "Collision.h"
-//#include "Textures.h"
+#include "Textures.h"
+#include "TextureSampler.h"
 
 class Plane : public ObjectDrawable<Plane>
 {
@@ -21,5 +22,9 @@ private:
 	XMVECTOR up = { 0.0f, 1.0f, 0.0f };
 	XMMATRIX look_at;
 	//Collision collider;
-	//Textures texture;
+
+	Graphics& renderer;
+
+	std::unique_ptr<Textures> texture;
+	std::unique_ptr<TextureSampler> sampler;
 };

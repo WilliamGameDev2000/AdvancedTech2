@@ -20,6 +20,7 @@ void Player::Shoot(std::unique_ptr<class Cube> &bullet)
 {
 	if (can_shoot)
 	{
+		bullet->SetDrawable(true);
 		bullet->setBullet();
 		bullet->setRot(wnd.Gfx().cam.getYaw());
 		bullet->setScale(0.2f, 0.2f, 0.2f);
@@ -40,10 +41,43 @@ Camera& Player::PlayerCam()
 	return playerCam;
 }
 
-void Player::Move(float delta)
+void Player::Update(float delta)
 {
 	dt = delta;
-	if(input.KeyIsPressed('A'))
+	Move();
+
+	Translate(traveling);
+	playerCam.UpdateCamera();
+	playerPos = playerCam.getPos();
+	traveling = direction::stationary;
+
+	if (!can_shoot)
+	{
+		if (fire_rate > 0)
+		{
+			fire_rate -= dt;
+		}
+		else
+		{
+			fire_rate = 1.1f;
+			can_shoot = true;
+		}
+	}
+}
+
+int Player::GetAmmoAmount()
+{
+	return ammo;
+}
+
+bool Player::GetCanShoot()
+{
+	return can_shoot;
+}
+
+void Player::Move()
+{
+	if (input.KeyIsPressed('A'))
 	{
 		traveling = direction::left;
 	}
@@ -75,29 +109,6 @@ void Player::Move(float delta)
 	{
 		playerCam.Rotate(0.0f, -speed * dt);
 	}
-
-	Translate(traveling);
-	playerCam.UpdateCamera();
-	playerPos = playerCam.getPos();
-	traveling = direction::stationary;
-
-	if (!can_shoot)
-	{
-		if (fire_rate > 0)
-		{
-			fire_rate -= dt;
-		}
-		else
-		{
-			fire_rate = 1.1f;
-			can_shoot = true;
-		}
-	}
-}
-
-int Player::GetAmmoAmount()
-{
-	return ammo;
 }
 
 void Player::Translate(direction dir)

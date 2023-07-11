@@ -5,15 +5,28 @@
 
 void Object::Draw(Graphics& gfx) const noexcept
 {
-	for (auto& b : binds)
+	if (is_drawable)
 	{
-		b->Bind(gfx);
+		for (auto& b : binds)
+		{
+			b->Bind(gfx);
+		}
+		for (auto& b : GetStaticBinds())
+		{
+			b->Bind(gfx);
+		}
+		gfx.DrawIndexed(pIndexBuffer->GetCount());
 	}
-	for (auto& b : GetStaticBinds())
-	{
-		b->Bind(gfx);
-	}
-	gfx.DrawIndexed(pIndexBuffer->GetCount());
+}
+
+void Object::SetDrawable(bool can_draw)
+{
+	is_drawable = can_draw;
+}
+
+bool Object::GetDrawable()
+{
+	return is_drawable;
 }
 
 void Object::AddBind(std::unique_ptr<Bindable> bind) noexcept

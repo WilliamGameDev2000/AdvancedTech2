@@ -39,14 +39,14 @@ HINSTANCE Window::WindowClass::GetInstance() noexcept
 
 //Window definition
 Window::Window(int width, int height, int xPos, int yPos, const char* name) noexcept
-	: width(width), height(height)
+	: _width(width), _height(height)
 {
 	const int offset = 100;
 	RECT wr;
 	wr.left = offset;
-	wr.right = width + wr.left;
+	wr.right = _width + wr.left;
 	wr.top = offset;
-	wr.bottom = height + wr.top;
+	wr.bottom = _height + wr.top;
 
 	hWnd = CreateWindow(WindowClass::GetName(), name, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, xPos, yPos,
 		wr.right - wr.left, wr.bottom - wr.top, nullptr, nullptr, WindowClass::GetInstance(), this);

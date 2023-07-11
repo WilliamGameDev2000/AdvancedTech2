@@ -32,7 +32,6 @@ private:
 	float rotation;
 	int numCubes = 0;
 	int numEnemies = 0;
-	int numBullets = 0;
 	int row = 0;
 	int column = 0;
 	char wallBlock = '#';

@@ -2,8 +2,9 @@
 #include "BindableBase.h"
 
 
-Plane::Plane(Graphics& gfx)
+Plane::Plane(Graphics& gfx) : renderer(gfx)
 {
+
 	if (!IsStaticInitialized())
 	{
 		const std::vector<Vertex> vertices =
@@ -60,6 +61,11 @@ Plane::Plane(Graphics& gfx)
 	}
 
 	AddBind(std::make_unique<TransformCbuff>(gfx, *this));
+
+	LoadTexture();
+
+	texture->Bind(gfx);
+	sampler->Bind(gfx);
 }
 
 void Plane::Update(float dt) noexcept
@@ -97,4 +103,6 @@ DirectX::XMMATRIX Plane::GetTransformXM() const noexcept
 
 void Plane::LoadTexture() noexcept
 {
+	texture = std::make_unique<Textures>(renderer, L"wolfenstein_head.jpg");
+	sampler = std::make_unique<TextureSampler>(renderer);
 }

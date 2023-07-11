@@ -19,6 +19,8 @@ public:
 	bool isColliding(DirectX::XMFLOAT3 pos1, float x_size, float y_size, float z_size);
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	void LoadTexture() noexcept override;
+
+	bool IsBullet();
 private:
 	// positional
 	DirectX::XMFLOAT3 pos = {0,0,0};
@@ -27,6 +29,8 @@ private:
 	DirectX::XMMATRIX rot = {};
 	Collision collider;
 	//Textures texture;
+
+	//Bullet specific logic
 	bool is_bullet = false;
 	float life_time = 3.5f;
 };

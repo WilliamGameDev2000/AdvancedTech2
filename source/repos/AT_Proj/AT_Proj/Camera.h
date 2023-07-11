@@ -17,6 +17,7 @@ public:
 	XMMATRIX GetView() const noexcept;
 	void SetView(XMMATRIX view);
 	void UpdateCamera();
+	void SetPos(XMVECTOR newPos);
 
 	void Translate(float x, float z);
 	float getForwardBack();
@@ -28,7 +29,7 @@ public:
 private:
 	
 	XMVECTOR camTarget;
-	XMVECTOR camPosition = {5.0f, 0.0f, 2.0f};
+	XMVECTOR camPosition = {-5.0f, 0, 0};
 	XMFLOAT3 floatPos;
 	XMVECTOR camUp = {0.0f, 1.0f, 0.0f};
 	XMMATRIX camView;

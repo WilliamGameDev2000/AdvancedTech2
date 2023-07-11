@@ -13,6 +13,8 @@ public:
 	Object(const Object&) = delete;
 	virtual DirectX::XMMATRIX GetTransformXM() const noexcept = 0;
 	void Draw(Graphics& gfx) const noexcept;
+	void SetDrawable(bool);
+	bool GetDrawable();
 	virtual void Update(float dt) noexcept = 0;
 	virtual void LoadTexture() noexcept = 0;
 	virtual ~Object() = default;
@@ -32,4 +34,6 @@ protected:
 private:
 	const class IndexBuffer* pIndexBuffer = nullptr;
 	std::vector<std::unique_ptr<Bindable>> binds;
+
+	bool is_drawable = true;
 };

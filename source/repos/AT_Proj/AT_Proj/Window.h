@@ -43,8 +43,8 @@ private:
 	std::unique_ptr<Graphics> gfxPtr;
 
 	
-	int width;
-	int height;
+	int _width;
+	int _height;
 	int xPos;
 	int yPos;
 	HWND hWnd;

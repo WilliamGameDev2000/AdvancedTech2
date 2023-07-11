@@ -78,22 +78,22 @@ void Cube::Update(float dt) noexcept
 {
 	if (is_bullet)
 	{
-		setPos(sin(objYaw) * 2 * dt, 0, cos(objYaw) * 2 * dt);
+		setPos(GetPos().x + sin(objYaw) * 2 * dt, 0, GetPos().z + cos(objYaw) * 2 * dt);
 
 		life_time -= dt;
 
 		if (life_time <= 0)
 		{
-			//destroy self
+			is_bullet = false;
 		}
 	}
 }
 
 void Cube::setPos(float xpos, float ypos, float zpos)
 {
-	pos.x += xpos;
-	pos.y += ypos;
-	pos.z += zpos;
+	pos.x = xpos;
+	pos.y = ypos;
+	pos.z = zpos;
 	collider.setBoundingBox(pos);
 }
 
@@ -149,4 +149,9 @@ DirectX::XMMATRIX Cube::GetTransformXM() const noexcept
 
 void Cube::LoadTexture() noexcept
 {
+}
+
+bool Cube::IsBullet()
+{
+	return is_bullet;
 }
